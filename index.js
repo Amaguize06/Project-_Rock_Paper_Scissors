@@ -2,6 +2,25 @@ let playGame = () => {
   let humanScore = 0;
   let computerScore = 0;
 
+  let getScoreHtml = () => {
+    // Sélectionne le conteneur où le texte sera ajouté
+    let ScoreAppend = document.querySelector(".divParant-3");
+
+    // Supprime l'ancienne balise <p> si elle existe
+    let oldScore = ScoreAppend.querySelector(".pChildScore");
+    if (oldScore) {
+      ScoreAppend.removeChild(oldScore);
+    }
+
+    // Crée une nouvelle balise <p>
+    let addScore1 = document.createElement("p");
+    addScore1.textContent = `${computerScore} - ${humanScore}`;
+    addScore1.classList.add("pChildScore");
+
+    // Ajoute la nouvelle balise <p> au conteneur
+    ScoreAppend.appendChild(addScore1);
+  };
+
   let getComputerChoice = () => {
     let numAl = Math.random();
     if (numAl <= 0.3) {
@@ -14,96 +33,190 @@ let playGame = () => {
   };
 
   let getHumanChoice = () => {
-    let a = prompt("Pierre, Papier, Ciseaux ?");
-    let txtH = a.toLowerCase();
-    if (txtH === "pierre") {
-      return "Pierre";
-    } else if (txtH === "papier") {
-      return "Papier";
-    } else if (txtH === "ciseaux") {
-      return "Ciseaux";
+    const btnRock = document.querySelector(".btnRock");
+    const btnPaper = document.querySelector(".btnPaper");
+    const btnScissors = document.querySelector(".btnScissors");
+
+    btnRock.addEventListener("click", () => {
+      console.log("Rock");
+      playRound("Pierre");
+    });
+
+    btnPaper.addEventListener("click", () => {
+      console.log("Paper");
+      playRound("Papier");
+    });
+
+    btnScissors.addEventListener("click", () => {
+      console.log("Scissors");
+      playRound("Ciseaux");
+    });
+  };
+
+  let logParts = (text) => {
+    if (humanScore >= 5 || computerScore >= 5) {
     } else {
-      confirm("Se n'est pas se qui a été demander");
-      return getHumanChoice();
+      // Sélectionne le conteneur où le texte sera ajouté
+      let logAppend = document.querySelector(".divLogTime");
+
+      // Supprime l'ancienne balise <p> si elle existe
+      let oldLog = logAppend.querySelector(".pChildLogTime");
+      if (oldLog) {
+        logAppend.removeChild(oldLog);
+      }
+
+      // Crée une nouvelle balise <p>
+      let addLog = document.createElement("p");
+      addLog.textContent = text;
+      addLog.classList.add("pChildLogTime");
+
+      // Ajoute la nouvelle balise <p> au conteneur
+      logAppend.appendChild(addLog);
     }
   };
 
-  let playRound = () => {
+  let logPartsWin = (text) => {
+    // Sélectionne le conteneur où le texte sera ajouté
+    let logAppend = document.querySelector(".divLogTime");
+
+    // Supprime l'ancienne balise <p> si elle existe
+    let oldLog = logAppend.querySelector(".pChildLogTime");
+    if (oldLog) {
+      logAppend.removeChild(oldLog);
+    }
+
+    // Crée une nouvelle balise <p>
+    let addLog = document.createElement("p");
+    addLog.textContent = text;
+    addLog.classList.add("pChildLogTime");
+
+    // Ajoute la nouvelle balise <p> au conteneur
+    logAppend.appendChild(addLog);
+  };
+
+  let playRound = (humanChoice) => {
     computerChoice = getComputerChoice();
-    humanChoice = getHumanChoice();
 
     if (humanChoice === "Pierre" && computerChoice === "Pierre") {
-      console.log(
-        `Execo "Pierre"!\n Voici les score: Human:${humanScore}, Computeur:${computerScore}`
+      logParts(
+        `"Execo "Rock" ! Here are the scores : Human : ${humanScore}, Computeur : ${computerScore}"`
       );
+      getScoreHtml();
     } else if (humanChoice === "Pierre" && computerChoice === "Papier") {
       computerScore++;
-      console.log(
-        `Computer Win!\n Vous avez fait "${humanChoice}" et l'ordinateur "${computerChoice}"\n Voici les score: Human:${humanScore}, Computeur:${computerScore}`
+      logParts(
+        `"Computer Win ! You did "${humanChoice}" and the computer "${computerChoice}" Here are the scores : Human : ${humanScore}, Computer : ${computerScore}"`
       );
+      getScoreHtml();
       return computerScore;
     } else if (humanChoice === "Pierre" && computerChoice === "Ciseaux") {
       humanScore++;
-      console.log(
-        `Human Win!\n Vous avez fait "${humanChoice}" et l'ordinateur "${computerChoice}"\n Voici les score: Human:${humanScore}, Computeur:${computerScore}`
+      logParts(
+        `"Human Win ! You made "${humanChoice}" and the computer made "${computerChoice}" Here are the scores : Human : ${humanScore}, Computer : ${computerScore}"`
       );
+      getScoreHtml();
       return humanScore;
     } else if (humanChoice === "Papier" && computerChoice === "Papier") {
-      console.log(
-        `Execo "Papier"!\n Voici les score: Human:${humanScore}, Computeur:${computerScore}`
+      logParts(
+        `"Execo "Paper" ! Here are the scores: Human : ${humanChoice}, Computer : ${computerChoice}"`
       );
+      getScoreHtml();
     } else if (humanChoice === "Papier" && computerChoice === "Pierre") {
       humanScore++;
-      console.log(
-        `Human Win!\n Vous avez fait "${humanChoice}" et l'ordinateur "${computerChoice}"\n Voici les score: Human:${humanScore}, Computeur:${computerScore}`
+      logParts(
+        `"Human Win ! You made "${humanChoice}" and the computer made "${computerChoice}" Here are the scores : Human : ${humanScore}, Computeur : ${computerScore}"`
       );
+      getScoreHtml();
       return humanScore;
     } else if (humanChoice === "Papier" && computerChoice === "Ciseaux") {
       computerScore++;
-      console.log(
-        `Computeur Win!\n Vous avez fait "${humanChoice}" et l'ordinateur "${computerChoice}"\n Voici les score: Human:${humanScore}, Computeur:${computerScore}`
+      logParts(
+        `"Computer Win ! You made "${humanChoice}" and the computer made "${computerChoice}" Here are the scores : Human : ${humanScore}, Computer : ${computerScore}"`
       );
+      getScoreHtml();
       return computerScore;
     } else if (humanChoice === "Ciseaux" && computerChoice === "Ciseaux") {
-      console.log(
-        `Execo "Ciseaux"!\n Voici les score: Human:${humanScore}, Computeur:${computerScore}`
+      logParts(
+        `"Execo "Scissors" ! Here are the scores : Human : ${humanScore}, Computer : ${computerScore}"`
       );
+      getScoreHtml();
     } else if (humanChoice === "Ciseaux" && computerChoice === "Pierre") {
       computerScore++;
-      console.log(
-        `Computer Win!\n Vous avez fait "${humanChoice}" et l'ordinateur "${computerChoice}"\n Voici les score: Human:${humanScore}, Computeur:${computerScore}`
+      logParts(
+        `"Computer Win ! You did "${humanChoice}" and the computer "${computerChoice}" Here are the scores : Human : ${humanScore}, Computer : ${computerScore}"`
       );
+      getScoreHtml();
       return computerScore;
     } else if (humanChoice === "Ciseaux" && computerChoice === "Papier") {
       humanScore++;
-      console.log(
-        `Human Win!\n Vous avez fait "${humanChoice}" et l'ordinateur "${computerChoice}"\n Voici les score: Human:${humanScore}, Computeur:${computerScore}`
+      logParts(
+        `"Human Win ! You made "${humanChoice}" and the computer made "${computerChoice}" Here are the scores : Human : ${humanScore}, Computer : ${computerScore}"`
       );
+      getScoreHtml();
       return humanScore;
     } else {
-      console.log(
-        `Voici les score: Human:${humanScore}, Computeur:${computerScore}`
+      logParts(
+        `"Here are the scores : Human :${humanScore}, Computer : ${computerScore}"`
       );
+      getScoreHtml();
+    }
+
+    if (humanScore >= 5 || computerScore >= 5) {
+      if (humanScore > computerScore) {
+        logPartsWin(
+          `"You win the game with a score of ${humanScore} against ${computerScore} !"`
+        );
+      } else if (humanScore < computerScore) {
+        logPartsWin(
+          `"The computer wins the game with a score of ${computerScore} against ${humanScore} !"`
+        );
+      } else {
+        logPartsWin(
+          `"The game ends in a draw with a score of ${humanScore} to ${computerScore}!"`
+        );
+      }
     }
   };
 
-  for (let i = 0; i < 5; i++) {
-    playRound();
-  }
-
-  if (humanScore > computerScore) {
-    console.log(
-      `Vous gagnez le jeu avec un score de ${humanScore} contre ${computerScore}!`
-    );
-  } else if (humanScore > computerScore) {
-    console.log(
-      `L'ordinateur gagne le jeu avec un score de ${computerScore} contre ${humanScore}!`
-    );
-  } else {
-    console.log(
-      `Le jeu se termine par un match nul avec un score de ${humanScore} à ${computerScore}!`
-    );
-  }
+  getHumanChoice();
 };
 
-// playGame();
+playGame();
+
+const replay = document.querySelector(".btnPlay");
+replay.addEventListener("click", (e) => {
+  playGame();
+  humanScore = 0;
+  computerScore = 0;
+  let ScoreAppend = document.querySelector(".divParant-3");
+
+  // Supprime l'ancienne balise <p> si elle existe
+  let oldScore = ScoreAppend.querySelector(".pChildScore");
+  if (oldScore) {
+    ScoreAppend.removeChild(oldScore);
+  }
+
+  // Crée une nouvelle balise <p>
+  let addScore1 = document.createElement("p");
+  addScore1.textContent = `0 - 0`;
+  addScore1.classList.add("pChildScore");
+
+  // Ajoute la nouvelle balise <p> au conteneur
+  ScoreAppend.appendChild(addScore1);
+
+  let logAppend = document.querySelector(".divLogTime");
+
+  // Supprime l'ancienne balise <p> si elle existe
+  let oldLog = logAppend.querySelector(".pChildLogTime");
+  if (oldLog) {
+    logAppend.removeChild(oldLog);
+  }
+
+  // Crée une nouvelle balise <p>
+  let addLog = document.createElement("p");
+  addLog.textContent = "Logs";
+  addLog.classList.add("pChildLogTime");
+
+  // Ajoute la nouvelle balise <p> au conteneur
+  logAppend.appendChild(addLog);
+});
